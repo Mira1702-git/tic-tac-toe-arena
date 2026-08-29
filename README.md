@@ -56,7 +56,6 @@ The AI is available only for the standard 3x3 board.
 ```text
 --players        two human players take turns
 --ai             play against the computer
-
 --color          enable colored output
 --big            render the board with large glyphs
 --verbose        show extended statistics
@@ -116,7 +115,7 @@ For the default 3x3 board:
 
 Players take turns choosing a free cell.
 
-The first player uses `X` and the second player uses `O`.
+Players use `X` and `O`. The `--first` option determines which mark moves first.
 
 A player wins by filling a complete:
 
@@ -264,6 +263,12 @@ Alice (X), choose a cell:
 
 The custom names are also used in win messages and statistics.
 
+For example:
+
+```text
+Alice wins!
+```
+
 ## Statistics
 
 Statistics are kept for the entire session.
@@ -321,9 +326,31 @@ O (O), choose a cell: 4
 ---+---+---
  7 | 8 | 9
 X (X), choose a cell: 2
-```
 
-The game continues until X or O wins, or the board is full.
+ X | X | 3
+---+---+---
+ O | 5 | 6
+---+---+---
+ 7 | 8 | 9
+O (O), choose a cell: 5
+
+ X | X | 3
+---+---+---
+ O | O | 6
+---+---+---
+ 7 | 8 | 9
+X (X), choose a cell: 3
+
+ X | X | X
+---+---+---
+ O | O | 6
+---+---+---
+ 7 | 8 | 9
+X wins!
+=== Stats ===
+Games: 1   X: 1   O: 0   Draws: 0
+Play again? (y/n):
+```
 
 ## Input validation
 
@@ -343,6 +370,18 @@ Error: cell 1 is taken
 ```
 
 The program then asks for another move.
+
+Invalid command-line options also produce an error and display usage information.
+
+Examples of invalid configurations include:
+
+- no game mode selected;
+- both `--players` and `--ai` selected;
+- an unknown flag;
+- an invalid value for `--first`;
+- a board size smaller than 3;
+- using `--size` together with `--ai`;
+- invalid or empty player names.
 
 ## Project structure
 
@@ -371,4 +410,6 @@ The project is split into separate packages:
 
 ## Team
 
-Add the names and GitHub usernames of all team members here.
+- Adil Tolegen — @github-username
+- Gaide Musenova — @github-username
+- Merey Zhaxybayeva — @github-username
