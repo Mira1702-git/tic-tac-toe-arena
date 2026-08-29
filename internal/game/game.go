@@ -21,7 +21,6 @@ type Stats struct {
 	Draws int
 }
 
-// renderBoard выбирает обычную или большую доску.
 func renderBoard(
 	b *board.Board,
 	config cli.Config,
@@ -40,8 +39,6 @@ func renderBoard(
 	)
 }
 
-// printError печатает ошибку.
-// При --color ошибка будет красной.
 func printError(config cli.Config, message string) {
 	if config.Color {
 		fmt.Println(red + message + reset)
@@ -51,7 +48,6 @@ func printError(config cli.Config, message string) {
 	fmt.Println(message)
 }
 
-// printStats выводит статистику.
 func printStats(
 	config cli.Config,
 	stats Stats,
@@ -102,7 +98,6 @@ func Run(config cli.Config) {
 		moves := 0
 
 		for {
-			// Показываем доску.
 			fmt.Print(
 				renderBoard(
 					b,
@@ -111,7 +106,6 @@ func Run(config cli.Config) {
 				),
 			)
 
-			// Ход компьютера в режиме --ai.
 			if config.Mode == "ai" && current == "O" {
 				index, reason := ai.FindMove(b)
 
@@ -137,7 +131,6 @@ func Run(config cli.Config) {
 					index+1,
 				)
 
-				// Проверяем победу компьютера.
 				if b.CheckWin("O") {
 					stats.OWins++
 
@@ -152,14 +145,13 @@ func Run(config cli.Config) {
 					)
 
 					fmt.Printf(
-						"%s (O) wins!\n",
+						"%s wins!\n",
 						config.NameO,
 					)
 
 					break
 				}
 
-				// Проверяем ничью.
 				if b.Full() {
 					stats.Draws++
 
@@ -179,7 +171,6 @@ func Run(config cli.Config) {
 				continue
 			}
 
-			// Определяем имя текущего игрока.
 			playerName := config.NameX
 
 			if current == "O" {
@@ -192,14 +183,11 @@ func Run(config cli.Config) {
 				current,
 			)
 
-			// Читаем ход через fmt.Scan.
 			var cell string
 			fmt.Scan(&cell)
 
 			position, err := strconv.Atoi(cell)
 
-			// Ошибка: введено не число
-			// или число вне диапазона.
 			if err != nil ||
 				position < 1 ||
 				position > config.Size*config.Size {
@@ -217,7 +205,6 @@ func Run(config cli.Config) {
 
 			index := position - 1
 
-			// Ошибка: клетка уже занята.
 			if !b.IsFree(index) {
 				printError(
 					config,
@@ -230,11 +217,9 @@ func Run(config cli.Config) {
 				continue
 			}
 
-			// Ставим X или O.
 			b.Place(index, current)
 			moves++
 
-			// Проверяем победу.
 			if b.CheckWin(current) {
 				if current == "X" {
 					stats.XWins++
@@ -253,15 +238,13 @@ func Run(config cli.Config) {
 				)
 
 				fmt.Printf(
-					"%s (%s) wins!\n",
+					"%s wins!\n",
 					playerName,
-					current,
 				)
 
 				break
 			}
 
-			// Проверяем ничью.
 			if b.Full() {
 				stats.Draws++
 
@@ -277,7 +260,6 @@ func Run(config cli.Config) {
 				break
 			}
 
-			// Меняем игрока.
 			if current == "X" {
 				current = "O"
 			} else {
@@ -285,14 +267,12 @@ func Run(config cli.Config) {
 			}
 		}
 
-		// Статистика после партии.
 		printStats(
 			config,
 			stats,
 			moves,
 		)
 
-		// Спрашиваем, играть ли ещё.
 		for {
 			fmt.Print("Play again? (y/n): ")
 
