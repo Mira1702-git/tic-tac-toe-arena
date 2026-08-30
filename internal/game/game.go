@@ -260,7 +260,7 @@ func Run(config cli.Config) {
 				break
 			}
 
-			// Проверяем ничью.
+			// Проверяем ничью. Проверяем ничью
 			if b.Full() {
 				stats.Draws++
 
